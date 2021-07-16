@@ -1,13 +1,15 @@
 use std::collections::HashMap;
 use rand::Rng;
+use regex::Regex;
+use std::io;
 
 
 
 fn main() {
 
     // calc_middle()
-
     pig_latin()
+
 
 }
 
@@ -47,25 +49,34 @@ fn calc_middle() {
 
     println!("Maximum is {:?} - {:?} times", hash_vec[0].0, hash_vec[0].1);
 
-    // for (key, value) in map{
-    //     if value > 1 {
-    //         println!("{}", key);
-    //     }
-        // println!("{:?} - {:?}", key, value);
-    // }
-
-    
-
-
 }
+
 
 
 fn pig_latin(){
+  
+    let re = Regex::new(r"^(?i)[aeiouy]").unwrap();
+    let ay_add = String::from("ay");
+    println!("WELCOME TO PIG LATIN TRANSLATOR");
 
-    let word = String::from("car");
+        loop {
+            
+            let mut word = String::new();
+            println!("Type any word or CTRL+C to exit");
+            io::stdin().read_line(&mut word).expect("Can't read input");
+                    
+            if re.is_match(&word) {
+                word = format!("{}-h{}", word.trim(), ay_add);
+            }
 
-    println!("{:}", word);
-
-    let aaa = word.chars();
-    println!("{:?}", aaa[1]);
+            else {   
+                let word_vec: Vec<char> = word.chars().collect();   
+                word = format!("{}-{}{}", word.trim(), word_vec[0].to_lowercase(),ay_add); 
+                let mut chars = word.chars();
+                chars.next();
+                word = chars.as_str().to_string();
+            }
+            println!("{:?}", word);
+    }
 }
+

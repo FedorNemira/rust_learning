@@ -6,16 +6,12 @@ use std::io;
 
 
 fn main() {
-
     // calc_middle()
     pig_latin()
-
-
 }
 
 
 fn calc_middle() {
-
     let mut my_vector : Vec<u32> = (1..111).map(|_x| rand::thread_rng().gen_range(1,50)).collect();
     let sum: u32 = my_vector.iter().sum();
     let my_vector_len = my_vector.len() as u32;
@@ -54,29 +50,25 @@ fn calc_middle() {
 
 
 fn pig_latin(){
-  
     let re = Regex::new(r"^(?i)[aeiouy]").unwrap();
     let ay_add = String::from("ay");
     println!("WELCOME TO PIG LATIN TRANSLATOR");
 
         loop {
-            
-            let mut word = String::new();
+            let mut user_string = String::new();
             println!("Type any word or CTRL+C to exit");
-            io::stdin().read_line(&mut word).expect("Can't read input");
-                    
-            if re.is_match(&word) {
-                word = format!("{}-h{}", word.trim(), ay_add);
-            }
+            io::stdin().read_line(&mut user_string).expect("Can't read input");
 
-            else {   
-                let word_vec: Vec<char> = word.chars().collect();   
-                word = format!("{}-{}{}", word.trim(), word_vec[0].to_lowercase(),ay_add); 
-                let mut chars = word.chars();
-                chars.next();
-                word = chars.as_str().to_string();
+            for word in user_string.split_whitespace() {
+                if re.is_match(&word) {
+                    print!("{}-h{} ", word.trim(), ay_add)
+                }
+                
+                else {
+                    let word_vec: Vec<char> = word.chars().collect();
+                    print!("{}-{}{} ", &word[1..].trim(), word_vec[0].to_lowercase(), ay_add);
+                }
             }
-            println!("{:?}", word);
+            println!("\n")
     }
 }
-

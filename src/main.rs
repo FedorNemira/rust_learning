@@ -2,12 +2,14 @@ use std::collections::HashMap;
 use rand::Rng;
 use regex::Regex;
 use std::io;
+// use std::io::Write;
 
 
 
 fn main() {
-    // calc_middle()
-    pig_latin()
+    // calc_middle();
+    // pig_latin();
+    employees_to_departments();
 }
 
 
@@ -72,3 +74,46 @@ fn pig_latin(){
             println!("\n")
     }
 }
+
+
+fn employees_to_departments() {
+    let mut company: HashMap<String, Vec<String>> = HashMap::new();
+    let mut employees: Vec<String> = Vec::new();
+
+    loop {
+        let mut department = String::new();
+        let mut employee = String::new();
+        
+        println!("\nPlease enter department to witch you want to add, or type 'list' to check list of employees");
+        io::stdin().read_line(&mut department).expect("Can't read line");
+        let department = department.trim();
+        
+        if department.to_lowercase() == "list".to_string() {
+            let mut sorted: Vec<_> = company.iter().collect();
+            sorted.sort_by_key(|a| a.0);
+            for (key, value) in sorted.iter() {
+                println!("{:?} : {:?}", key, value);
+            }
+        }
+        
+        else {
+            println!("Enter employee name");
+            io::stdin().read_line(&mut employee).expect("Can't read line");
+            let employee = employee.trim();
+        
+            match company.get_mut(&*department) {
+                Some(v) => {
+                    v.push(String::from(employee).trim().to_string());
+                    v.sort();
+                },
+                None => {
+                    let employees = vec![String::from(employee).to_string()];
+                    company.insert(department.to_string(), employees);
+                }
+            }
+        }
+    }
+}
+
+
+
